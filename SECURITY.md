@@ -16,3 +16,37 @@ This document highlights common threats relevant to the repository and its servi
 
 5. Supply Chain Risk
    - Dependencies should be reviewed and pinned to known-safe versions. Untrusted packages or outdated libraries can introduce vulnerabilities.
+
+## Week 1 Security Tests
+
+### Test Methodology
+- **Empty Input**: Send empty or null values to endpoints.
+- **SQL Injection**: Attempt SQL injection payloads (e.g., `' OR 1=1 --`).
+- **Prompt Injection**: Attempt prompt injection patterns (e.g., "ignore previous instructions").
+
+### Endpoints Tested
+- Backend: `GET /api/health`
+- AI Service: `GET /health`, `POST /api/ai/prompt`
+
+### Test Results
+
+#### Empty Input
+- **Backend /api/health**: Returns "OK" (no input required).
+- **AI Service /health**: Returns `{"status": "ok"}` (no input required).
+- **AI Service /api/ai/prompt**: Accepts empty prompt, processes as "Hello from AI service" (graceful handling).
+
+#### SQL Injection
+- **Backend /api/health**: No user input, no vulnerability.
+- **AI Service /health**: No user input, no vulnerability.
+- **AI Service /api/ai/prompt**: Input sanitized (HTML stripped), no direct DB queries. Payloads like `' OR 1=1 --` treated as text, no injection possible.
+
+#### Prompt Injection
+- **Backend /api/health**: No user input, no vulnerability.
+- **AI Service /health**: No user input, no vulnerability.
+- **AI Service /api/ai/prompt**: Middleware detects and blocks patterns like "ignore previous instructions", returns 400 error. Tested patterns: "ignore all previous instructions", "disregard previous instructions", "you are now". All blocked successfully.
+
+### Overall Assessment
+- **Pass**: All endpoints handle empty input gracefully.
+- **Pass**: No SQL injection vulnerabilities detected (backend uses JPA with parameterized queries, AI service does not query databases).
+- **Pass**: Prompt injection mitigated by middleware regex patterns.
+- **Recommendation**: Continue monitoring and add logging for blocked attempts.
