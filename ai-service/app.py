@@ -19,6 +19,8 @@ app.before_request(sanitize_prompt)
 def add_security_headers(response):
     response.headers['Content-Security-Policy'] = "frame-ancestors 'none';"
     response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
     return response
 
 @app.route("/health")
@@ -26,4 +28,4 @@ def health():
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)

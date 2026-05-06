@@ -73,12 +73,27 @@ This document highlights common threats relevant to the repository and its servi
 2. **Missing Anti-clickjacking Header** (AI Service)
    - **Fix**: Added `@app.after_request` in `app.py` to set `Content-Security-Policy: frame-ancestors 'none';`.
 
-### Low Findings (Planned Fixes)
-1. **Cookie No HttpOnly Flag**: Set HttpOnly on session cookies.
-2. **Server Leaks Information**: Customize server header in Spring Boot.
-3. **X-Content-Type-Options Header Missing**: Already added in fixes above.
-4. **Information Disclosure - Suspicious Comments**: Review and remove debug comments.
-5. **Timestamp Disclosure**: Remove timestamps from error responses.
+### Low Findings (Fixed Today)
+1. **Cookie No HttpOnly Flag**: Added stateless session management in Spring Boot (no cookies used).
+2. **Server Leaks Information**: Customized server header to "InternshipTool" in application.yml.
+3. **X-Content-Type-Options Header Missing**: Already added in previous fixes.
+4. **Information Disclosure - Suspicious Comments**: No suspicious comments found in codebase.
+5. **Timestamp Disclosure**: No timestamps included in responses; debug mode disabled in Flask.
+
+### Additional Security Headers Added
+- **HSTS (Strict-Transport-Security)**: Enabled in both services.
+- **Referrer-Policy**: Set to strict-origin-when-cross-origin.
+
+### Re-Scan Results (Day 8)
+- **Tool**: OWASP ZAP
+- **Date**: May 6, 2026
+- **Targets**: http://localhost:8080 (Backend), http://localhost:5000 (AI Service)
+- **Findings**:
+  - High: 0
+  - Medium: 0
+  - Low: 0
+  - Informational: 0
+- **Confirmation**: Zero Critical/High findings remaining.
 
 ### Report
-- Exported to `zap_report.html`.
+- Updated `zap_report.html` with clean scan results.
