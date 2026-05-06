@@ -97,3 +97,35 @@ This document highlights common threats relevant to the repository and its servi
 
 ### Report
 - Updated `zap_report.html` with clean scan results.
+
+## Week 2 Security Sign-Off (Day 9)
+
+### JWT Authentication
+- **Implementation**: Added JWT-based authentication in Spring Boot backend.
+  - Dependencies: jjwt-api, jjwt-impl, jjwt-jackson.
+  - Components: JwtUtil for token generation/validation, JwtRequestFilter for request filtering, MyUserDetailsService for user loading, AuthController for login.
+  - Configuration: Stateless sessions, protected endpoints except /api/auth/** and /api/health.
+- **Verification**: Login endpoint generates JWT, protected endpoints require Bearer token. Tested with Postman.
+
+### Rate Limiting
+- **Implementation**: Flask-Limiter in AI service (30 requests/minute per IP).
+- **Verification**: Exceeding limit returns 429 status. Confirmed via curl tests.
+
+### Injection Protections
+- **SQL Injection**: Verified no vulnerabilities (JPA parameterized queries, no DB in AI service).
+- **Prompt Injection**: Middleware regex blocks patterns like "ignore previous instructions".
+- **Verification**: All Week 1 tests pass, additional payloads tested.
+
+### PII Audit
+- **Audit Results**: No personal identifiable information stored or processed in prompts.
+  - Prompts are sanitized (HTML stripped), not persisted.
+  - AI service does not collect user data beyond input prompts.
+  - Backend uses H2 in-memory DB with no user data.
+- **Confirmation**: Code review confirms no PII handling; prompts treated as generic text.
+
+### Overall Sign-Off
+- **Pass**: JWT authentication implemented and verified.
+- **Pass**: Rate limiting enforced.
+- **Pass**: Injection protections in place.
+- **Pass**: No PII in prompts confirmed.
+- **Recommendation**: Implement proper user management and database for production.
