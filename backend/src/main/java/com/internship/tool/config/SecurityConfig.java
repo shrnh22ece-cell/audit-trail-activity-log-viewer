@@ -15,6 +15,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
+            )
+            .headers(headers -> headers
+                .frameOptions().deny()  // X-Frame-Options: DENY
+                .contentTypeOptions().and()  // X-Content-Type-Options: nosniff
             );
         return http.build();
     }

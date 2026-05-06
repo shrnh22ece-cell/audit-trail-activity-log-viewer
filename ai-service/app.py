@@ -15,6 +15,12 @@ limiter.init_app(app)
 app.register_blueprint(ai_routes.bp)
 app.before_request(sanitize_prompt)
 
+@app.after_request
+def add_security_headers(response):
+    response.headers['Content-Security-Policy'] = "frame-ancestors 'none';"
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    return response
+
 @app.route("/health")
 def health():
     return jsonify({"status": "ok"})

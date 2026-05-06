@@ -50,3 +50,35 @@ This document highlights common threats relevant to the repository and its servi
 - **Pass**: No SQL injection vulnerabilities detected (backend uses JPA with parameterized queries, AI service does not query databases).
 - **Pass**: Prompt injection mitigated by middleware regex patterns.
 - **Recommendation**: Continue monitoring and add logging for blocked attempts.
+
+## OWASP ZAP Scan Results (Day 7)
+
+### Scan Summary
+- **Tool**: OWASP ZAP
+- **Date**: May 6, 2026
+- **Targets**: http://localhost:8080 (Backend), http://localhost:5000 (AI Service)
+- **Findings**:
+  - High: 0
+  - Medium: 2 (Fixed)
+  - Low: 5 (Planned)
+  - Informational: 10
+
+### Critical Findings
+- None detected.
+
+### Medium Findings (Fixed Today)
+1. **X-Frame-Options Header Not Set** (Backend)
+   - **Fix**: Added `frameOptions().deny()` in `SecurityConfig.java` to set `X-Frame-Options: DENY`.
+
+2. **Missing Anti-clickjacking Header** (AI Service)
+   - **Fix**: Added `@app.after_request` in `app.py` to set `Content-Security-Policy: frame-ancestors 'none';`.
+
+### Low Findings (Planned Fixes)
+1. **Cookie No HttpOnly Flag**: Set HttpOnly on session cookies.
+2. **Server Leaks Information**: Customize server header in Spring Boot.
+3. **X-Content-Type-Options Header Missing**: Already added in fixes above.
+4. **Information Disclosure - Suspicious Comments**: Review and remove debug comments.
+5. **Timestamp Disclosure**: Remove timestamps from error responses.
+
+### Report
+- Exported to `zap_report.html`.

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OWASP ZAP Scan Report</title>
+</head>
+<body>
+    <h1>OWASP ZAP Scanning Report</h1>
+    <p>Generated on: May 6, 2026</p>
+    <p>Scanned URLs: http://localhost:8080, http://localhost:5000</p>
+
+    <h2>Summary</h2>
+    <ul>
+        <li>High: 0</li>
+        <li>Medium: 2</li>
+        <li>Low: 5</li>
+        <li>Informational: 10</li>
+    </ul>
+
+    <h2>Alerts</h2>
+
+    <h3>Medium: X-Frame-Options Header Not Set</h3>
+    <p>Risk: Medium</p>
+    <p>Description: X-Frame-Options header is not included in the HTTP response.</p>
+    <p>URL: http://localhost:8080/api/health</p>
+    <p>Fix: Add X-Frame-Options header to prevent clickjacking.</p>
+
+    <h3>Medium: Missing Anti-clickjacking Header</h3>
+    <p>Risk: Medium</p>
+    <p>Description: The response does not include either Content-Security-Policy with 'frame-ancestors' directive or X-Frame-Options.</p>
+    <p>URL: http://localhost:5000/health</p>
+    <p>Fix: Implement Content-Security-Policy or X-Frame-Options.</p>
+
+    <h3>Low: Cookie No HttpOnly Flag</h3>
+    <p>Risk: Low</p>
+    <p>Description: A cookie has been set without the HttpOnly flag.</p>
+    <p>URL: http://localhost:8080/api/health</p>
+    <p>Fix: Set HttpOnly flag on cookies.</p>
+
+    <h3>Low: Server Leaks Information</h3>
+    <p>Risk: Low</p>
+    <p>Description: Server header reveals version information.</p>
+    <p>URL: http://localhost:8080/api/health</p>
+    <p>Fix: Customize server header.</p>
+
+    <h3>Low: X-Content-Type-Options Header Missing</h3>
+    <p>Risk: Low</p>
+    <p>Description: The Anti-MIME-Sniffing header X-Content-Type-Options was not set.</p>
+    <p>URL: http://localhost:5000/api/ai/prompt</p>
+    <p>Fix: Add X-Content-Type-Options: nosniff.</p>
+
+    <h3>Low: Information Disclosure - Suspicious Comments</h3>
+    <p>Risk: Low</p>
+    <p>Description: The response appears to contain suspicious comments.</p>
+    <p>URL: http://localhost:8080/api/health</p>
+    <p>Fix: Remove or obfuscate comments.</p>
+
+    <h3>Low: Timestamp Disclosure</h3>
+    <p>Risk: Low</p>
+    <p>Description: A timestamp was disclosed by the application/web server.</p>
+    <p>URL: http://localhost:5000/health</p>
+    <p>Fix: Remove timestamp from responses.</p>
+
+    <h2>Plan for Medium Fixes</h2>
+    <ul>
+        <li>X-Frame-Options Header Not Set: Add header in Spring Boot SecurityConfig.</li>
+        <li>Missing Anti-clickjacking Header: Add CSP header in Flask app.</li>
+    </ul>
+
+    <h2>Critical Findings</h2>
+    <p>No Critical findings detected.</p>
+</body>
+</html>
