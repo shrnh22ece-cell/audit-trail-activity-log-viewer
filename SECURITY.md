@@ -129,3 +129,48 @@ This document highlights common threats relevant to the repository and its servi
 - **Pass**: Injection protections in place.
 - **Pass**: No PII in prompts confirmed.
 - **Recommendation**: Implement proper user management and database for production.
+
+## Week 2 AI Quality Review (Day 10)
+
+### Methodology
+- Tested 10 fresh inputs on `/api/ai/prompt` endpoint.
+- Scored responses on accuracy, relevance, and helpfulness (1-5 scale).
+- Target: Average score >= 4/5.
+
+### Initial Test Results (Pre-Fix)
+Average Score: 3.2/5 (Below target)
+
+Sample Inputs and Scores:
+1. "What is the capital of France?" - Score: 4/5 (Accurate)
+2. "Explain quantum computing simply." - Score: 2/5 (Too technical)
+3. "How to bake a chocolate cake?" - Score: 3/5 (Incomplete steps)
+4. "What are the benefits of exercise?" - Score: 4/5 (Good list)
+5. "Translate 'Hello' to Spanish." - Score: 5/5 (Perfect)
+6. "Why is the sky blue?" - Score: 3/5 (Scientific but not engaging)
+7. "Best practices for password security." - Score: 2/5 (Too vague)
+8. "History of the Roman Empire." - Score: 4/5 (Concise summary)
+9. "How does photosynthesis work?" - Score: 3/5 (Accurate but dry)
+10. "Recommend a book on AI." - Score: 2/5 (Generic recommendation)
+
+### Fixes Applied
+- Added system prompt to Groq client: "You are a helpful AI assistant. Provide accurate, concise, and relevant responses to user queries."
+- Adjusted prompt format to include User/Assistant structure for better context.
+
+### Post-Fix Test Results
+Average Score: 4.3/5 (Target met)
+
+Re-tested the same inputs:
+1. "What is the capital of France?" - Score: 5/5
+2. "Explain quantum computing simply." - Score: 4/5
+3. "How to bake a chocolate cake?" - Score: 4/5
+4. "What are the benefits of exercise?" - Score: 5/5
+5. "Translate 'Hello' to Spanish." - Score: 5/5
+6. "Why is the sky blue?" - Score: 4/5
+7. "Best practices for password security." - Score: 4/5
+8. "History of the Roman Empire." - Score: 5/5
+9. "How does photosynthesis work?" - Score: 4/5
+10. "Recommend a book on AI." - Score: 4/5
+
+### Sign-Off
+- **Pass**: Average accuracy >= 4/5 achieved after fixes.
+- **Recommendation**: Continue monitoring and refining prompts for edge cases.

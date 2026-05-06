@@ -49,9 +49,12 @@ class GroqClient:
             logger.error(message)
             return message
 
+        system_prompt = "You are a helpful AI assistant. Provide accurate, concise, and relevant responses to user queries."
+        full_prompt = f"{system_prompt}\n\nUser: {prompt}\n\nAssistant:"
+
         payload: Dict[str, Any] = {
             'model': 'openai/gpt-oss-20b',
-            'input': prompt,
+            'input': full_prompt,
             'temperature': 0.7,
             'max_output_tokens': 200,
         }
